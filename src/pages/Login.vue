@@ -29,14 +29,14 @@
 			<div class="form-group">
 				<label class="col-sm-3 col-xs-3 control-label">密码：</label>
 				<div class="col-sm-9 col-x-5">
-					<input class="form-control" @blur="checkPwd()" name="pwd" type="text" placeholder="请输入密码" v-model.trim="password">
+					<input class="form-control" @blur="checkPwd()" name="pwd" type="password" placeholder="请输入密码" v-model.trim="password">
 				</div>
 				<span>{{msgpwd}}</span>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 col-xs-3 control-label">确认密码：</label>
 				<div class="col-sm-9 col-x-5">
-					<input class="form-control" @blur="repeatPwd()" type="text" placeholder="请再次输入密码" v-model.trim="repeat">
+					<input class="form-control" @blur="repeatPwd()" type="password" placeholder="请再次输入密码" v-model.trim="repeat">
 				</div>				
 				<span>{{msgpwd2}}</span>
 			</div>

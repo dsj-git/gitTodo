@@ -31,6 +31,9 @@ npm test
 账号：数字、字母（不区分大小写），下划线、汉字
 密码：密码长度应为6-16个字符，请使用字符加数字或符号的组合密码，不能单独使用字母、数字或符号
 
+# 【自定义指令】
+directives:{focus:{}}   v-focus
+
 #【filters】
 使用vue2.0的用法，通过过滤器给数字加单位或者保留两个小数点
 
@@ -43,7 +46,7 @@ npm test
 #【结算】
 选中商品，全选商品
 
-【增加或者减少商品数量】
+#【增加或者减少商品数量】
 只写一个方法即可，传入type值，判断type值来选择调用什么方法
 
 ##【地址页面】
@@ -55,5 +58,6 @@ flex布局
 #[vue还有一些功能没有使用]
 axios，vue-resource等等
 
+#[新增加tab切换]
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

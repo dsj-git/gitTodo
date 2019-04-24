@@ -1,7 +1,7 @@
 <template>
 	<div class="address">
 		<div class="addState">
-			<div class="active">地址确认<span></span></div>
+			<div class="current">地址确认<span></span></div>
 			<div>查看订单<span></span></div>
 			<div>支付<span></span></div>
 			<div>订单确认<span></span></div>
@@ -164,11 +164,11 @@
 		border-radius: 5px;
 		background: #ddd;
 	}
-	.addState .active{
+	.addState .current{
 		border-color: lightcoral;
 		color: lightcoral;
 	}
-	.addState .active span{
+	.addState .current span{
 		background: lightcoral;
 	}
 	.addAdd>div{

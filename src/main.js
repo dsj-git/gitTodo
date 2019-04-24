@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import router from './router'
 import store from './store'
+import axios from 'axios'
 import './assets/css/bootstrap.min.css'
 
 
@@ -10,6 +11,7 @@ import App from './App'
 
 Vue.config.productionTip = false
 Vue.prototype.$store = store;
+Vue.prototype.$axios = axios;
 
 /* eslint-disable no-new */
 new Vue({

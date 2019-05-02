@@ -4,6 +4,7 @@
 
 <script>
 	export default{
+		name: 'select02',
 		data(){
 			return{
 				msg: 'tab实现切换2'

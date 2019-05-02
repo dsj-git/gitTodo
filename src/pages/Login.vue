@@ -13,6 +13,11 @@
 					<input class="form-control" type="password" v-model="password" placeholder="请输入密码">
 				</div>
 			</div>
+			<div class="checkbox col-sm-offset-3 text-left" >
+				<label>
+				  <input type="checkbox" v-model="isRemb"> 记住密码
+				</label>
+			</div>
 			<div class="form-group">
 				<button type="button" class="btn btn-success" @click="login()">登录</button>
 				<button type="button" class="btn btn-dafult" @click="reg()">注册</button>
@@ -22,14 +27,14 @@
 			<div class="form-group">
 				<label class="col-sm-3 col-xs-3 control-label">账号：</label>
 				<div class="col-sm-9 col-xs-5">
-					<input class="form-control" @blur="checkName()" name="regname" type="text" placeholder="请输入用户名" v-model.trim="name">
+					<input class="form-control" @blur="checkName()" name="regname" type="text" placeholder="请输入用户名" v-model.trim="regName">
 				</div>
 				<span>{{msgname}}</span>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 col-xs-3 control-label">密码：</label>
 				<div class="col-sm-9 col-xs-5">
-					<input class="form-control" @blur="checkPwd()" name="pwd" type="password" placeholder="请输入密码" v-model.trim="password">
+					<input class="form-control" @blur="checkPwd()" name="pwd" type="password" placeholder="请输入密码" v-model.trim="regPassword">
 				</div>
 				<span>{{msgpwd}}</span>
 			</div>
@@ -56,8 +61,11 @@
 		data(){
 			return{
 				isReg: false,
+				isRemb: false,
 				name: '',
 				password: '',
+				regName: '',
+				regPassword: '',
 				repeat: '',
 				msgname: '',
 				msgpwd: '',
@@ -66,6 +74,15 @@
 					Account:'',
 					Password:''
 				}
+			}
+		},
+		created(){
+			let account = localStorage.getItem('name');
+			let pwd = localStorage.getItem('password');
+			if(!this.isRemb){
+				this.name = account;
+				this.password = pwd;
+				this.isRemb = true;
 			}
 		},
 		//自定义指令
@@ -88,9 +105,18 @@
 					this.formdata.Account = this.name;
 					this.formdata.Password = this.password;
 					this.$store.commit('getUserInfo',this.formdata);
-					console.log(localStorage.getItem("name")+  "+" + localStorage.getItem("password"));
-					console.log(this.name + this.password);
-					this.$router.push('/home/list')
+					//console.log(localStorage.getItem("name")+  "+" + localStorage.getItem("password"));
+					//console.log(this.name + this.password);
+					//记住密码
+					if(this.isRemb == true){
+						localStorage.setItem("name",this.name);
+						localStorage.setItem("password",this.password);
+						console.log('记住了密码');
+					}else{
+						localStorage.clear("name",'');
+						localStorage.clear("password",'');
+					}
+					this.$router.push('/home/list');
 				}else{
 					alert('请输入用户名和密码')
 				}
@@ -114,7 +140,7 @@
 			},
 			//判断用户名字符长度
 			getLength(str){
-				return str.replace("/[^\x00-xff]/g","xx").length;//汉字，一个字代表两个字符;x00-xff单字节
+				return str.replace(/[^\x00-xff]/g,"xx").length;//汉字，一个字代表两个字符;x00-xff单字节
 			},
 			//判断密码使用相同字符
 			findStr(str,n){	//两个参数：字符串，要对比的字符
@@ -127,7 +153,7 @@
 				return tmp;
 			},
 			checkName(){
-				let nameLen = this.getLength(this.name);
+				let nameLen = this.getLength(this.regName);
 				//console.log(nameLen);
 				if(nameLen == 0){
 					this.msgname = "用户名不能为空"
@@ -140,20 +166,20 @@
 				}
 			},
 			checkPwd(){
-				let pwd = this.password;
+				let pwd = this.regPassword;
 				let m = this.findStr(pwd,pwd[0]);
 				let re_n = /[^\d]/g;//不是数字
 				let re_t = /[^a-zA-Z]/g;//不是字母
 				//console.log(pwd.length);
 				if(pwd.length == 0){
 					this.msgpwd = "密码不能为空"
-				}else if(pwd.length>5){
-					this.msgpwd = "密码强度为中"
-				}else if(pwd.length>10){
-					this.msgpwd = "密码强度为高"
-				}else if(pwd.length<5){
-					this.msgpwd = "密码强度为低"
-				}else if(pwd.length == m){
+// 				}else if(pwd.length>5){
+// 					this.msgpwd = "密码强度为中"
+// 				}else if(pwd.length>10){
+// 					this.msgpwd = "密码强度为高"
+// 				}else if(pwd.length<5){
+// 					this.msgpwd = "密码强度为低"
+ 				}else if(pwd.length == m){
 					this.msgpwd = "不能使用相同字符"
 				}else if(pwd.length<6 || pwd.length>16){
 					this.msgpwd = "密码长度应为6-16个字符"
@@ -166,27 +192,34 @@
 				}
 			},
 			repeatPwd(){
-				if(this.password != this.repeat){
+				if(this.regPassword != this.repeat){
 					this.msgpwd2 = '两次密码输入不一致';
 					document.getElementsByName('pwd')[0].focus();
-					this.password = '';
+					this.regPassword = '';
 					this.repeat = ''
 				}
 			},
 			addUser(){
-				if(this.password === this.repeat){
-					localStorage.setItem("name",this.name);
-					localStorage.setItem("password",this.password);
-					this.name = '';
-					this.password = '';				
+				if(this.regPassword === this.repeat){
+					localStorage.setItem("regName",this.regName);
+					localStorage.setItem("regPassword",this.regPassword);
+					this.regName = '';
+					this.regPassword = '';				
 					this.repeat = '';				
-					this.isReg = false;
-					console.log(localStorage.getItem("name")+  "+" + localStorage.getItem("password"));
-					this.$router.push('/home/list');
+					this.checkName();
+					this.checkPwd();
+					this.repeatPwd();
+					//console.log(localStorage.getItem("regName")+  "+" + localStorage.getItem("password"));
+					//this.$router.push('/home/list');
+				}else{
+					this.repeat = '请输入密码'
 				}
 			},
 			cancel(){
-				this.isReg = false
+				this.isReg = false;
+				this.msgname = '';
+				this.msgpwd = '';
+				this.msgpwd2 = '';
 			}
 
 		},

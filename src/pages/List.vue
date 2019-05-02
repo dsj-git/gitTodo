@@ -1,5 +1,6 @@
 <template>
 	<div class="container">
+		<!-- <router-view /> -->
 		<div class="imgBox" v-for="(item,index) in lists">
 			<img :src="item.imgPath" :alt="item.alt" >
 			<div class="caption">
@@ -58,7 +59,8 @@
 		},
 		filters:{
 			formataMoney(value,type){
-				return "￥" + value.toFixed(2);
+				type = type || '元';
+				return type + value.toFixed(2);
 			}
 		},
 		computed: {
@@ -67,14 +69,32 @@
 		methods:{
 			...mapMutations(['getUserInfo','getList']),
 			addCart(item){
+			    let obj = localStorage.getItem('cart');
+				if(obj==null){
+					let arr = [];
+					arr.push(item);
+					localStorage.setItem('cart', JSON.stringify(arr));
+				}else{
+					let tmp = JSON.parse(obj);
+					for(let i=0;i<tmp.length;i++){
+						if(tmp[i].id == item.id){
+							tmp[i].quantity ++;
+							localStorage.setItem('cart', JSON.stringify(tmp));
+							return;
+						}
+					}
+					tmp.push(item);
+                    localStorage.setItem('cart', JSON.stringify(tmp));
+				}
+				
 				//findIndex对于空数组不会执行
-				let sendItem = this.sendLists.filter(v => v.id == item.id)[0];
-				if(sendItem){					
-					sendItem.quantity ++ ;
-				}else{					
-					this.sendLists.push({...item, quantity: 1})
-				}		
-				this.$store.commit('getList',this.sendLists);
+// 				let sendItem = this.sendLists.filter(v => v.id == item.id)[0];
+// 				if(sendItem){					
+// 					sendItem.quantity ++ ;
+// 				}else{					
+// 					this.sendLists.push({...item, quantity: 1})
+// 				}		
+// 				this.$store.commit('getList',this.sendLists);
 				//console.log(this.cartList);
 			}
 		}

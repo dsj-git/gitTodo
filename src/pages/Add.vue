@@ -10,6 +10,7 @@
 					{{tab.name}}
 				</button>  
 			  </div>  
+			  
 			  <keep-alive>   
 				<component v-bind:is="tabView" class="tab"></component>  
 			  </keep-alive>   

@@ -53,8 +53,12 @@
 			}
 		},
 		mounted() {
-			this.cartLists = this.cartList;
-			console.log(this.cartLists)
+			//this.cartLists = this.cartList;
+			//console.log(this.cartLists);
+			
+			let tmp = localStorage.getItem('cart');
+			this.cartLists = JSON.parse(tmp);
+
 		},
 		computed: {
 			...mapState(['cartList','userInfo'])
@@ -109,6 +113,8 @@
 			//删除数据
 			handleDel(index){
 				this.cartLists.splice(index,1);
+				//真的删除
+			    localStorage.setItem('cart',JSON.stringify(this.cartLists));
 				this.calTotal();
 				this.claCount();
 			},

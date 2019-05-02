@@ -26,8 +26,8 @@ export default new Router({
 				{
 					path: 'list',
 					name: 'list',
-					component: () => import(/* webpackChunkName: "list" */ '@/pages/List.vue')
-					//component: List
+					component: () => import(/* webpackChunkName: "list" */ '@/pages/List.vue'),
+					//component: () => import('@/pages/List.vue')
 				},
 				{
 					path: 'cart',
